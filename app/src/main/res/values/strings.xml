@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Forget Me Not</string>
+
+    <string name="task_tab_generic">General</string>
+    <string name="task_tab_social">Social</string>
+    <string name="task_tab_business">Business</string>
+</resources>

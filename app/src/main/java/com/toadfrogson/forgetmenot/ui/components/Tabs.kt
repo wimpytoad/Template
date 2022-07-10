@@ -23,6 +23,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.toadfrogson.forgetmenot.R
+import com.toadfrogson.forgetmenot.model.TaskModel
 import com.toadfrogson.forgetmenot.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -72,6 +73,14 @@ fun Tabs(pagerState: PagerState) {
         }
     }
 }
+fun generateMocks(): List<TaskModel> {
+    val mockedTasks = mutableListOf<TaskModel>()
+    mockedTasks.add(TaskModel("First Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel("Second Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel("Third Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel("Fourth Task", "it's short but meaningful description"))
+    return mockedTasks
+}
 
 @ExperimentalPagerApi
 @Composable
@@ -79,26 +88,22 @@ fun TabsContent(pagerState: PagerState) {
     HorizontalPager(state = pagerState) {
             page ->
         when (page) {
-            0 -> TabContentScreen(data = "Welcome to Home Screen")
-            1 -> TabContentScreen(data = "Welcome to Shopping Screen")
-            2 -> TabContentScreen(data = "Welcome to Settings Screen")
+            0 -> TabContentScreen(generateMocks())
+            1 -> TabContentScreen(generateMocks())
+            2 -> TabContentScreen(generateMocks())
         }
     }
 }
 
 @Composable
-fun TabContentScreen(data: String) {
+fun TabContentScreen(taskItems: List<TaskModel>) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Top
     ) {
-        Text(
-            text = data,
-            style = MaterialTheme.typography.h5,
-            color = PrimaryTextColor,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
+        taskItems.forEachIndexed{ index, item ->
+            TaskItem(text = item.title)
+        }
     }
 }

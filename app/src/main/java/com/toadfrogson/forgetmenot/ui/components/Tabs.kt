@@ -103,7 +103,7 @@ fun TabContentScreen(taskItems: List<TaskModel>) {
         verticalArrangement = Arrangement.Top
     ) {
         taskItems.forEachIndexed{ index, item ->
-            TaskItem(text = item.title)
+            TaskItem(text = item.title, description = item.description)
         }
     }
 }

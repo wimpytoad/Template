@@ -1,11 +1,14 @@
 package com.toadfrogson.forgetmenot.ui.theme
 
 import androidx.compose.ui.graphics.Color
+import com.toadfrogson.forgetmenot.R
 
-val Primary = Color(0xFFD7CCC8)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Primary = Color(R.color.primaryColor)
+val PrimaryLightColor = Color(R.color.primaryDarkColor)
+val PrimaryDarkColor = Color(R.color.primaryDarkColor)
+val SecondaryColor = Color(R.color.secondaryColor)
+val SecondaryLightColor = Color(R.color.secondaryLightColor)
+val SecondaryDarkColor = Color(R.color.secondaryDarkColor)
+val PrimaryTextColor = Color(R.color.secondaryDarkColor)
+val SecondaryTextColor = Color(R.color.secondaryTextColor)
+val WhiteBackgroundColor = Color(R.color.eggWhite)

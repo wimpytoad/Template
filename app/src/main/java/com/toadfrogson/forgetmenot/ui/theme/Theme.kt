@@ -15,16 +15,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 
+//TODO: probably dont need this
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    secondary = SecondaryColor,
+    tertiary = PrimaryLightColor
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Primary,
+    secondary = SecondaryColor,
+    tertiary = PrimaryLightColor
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -49,7 +51,7 @@ fun ForgetMeNotTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current

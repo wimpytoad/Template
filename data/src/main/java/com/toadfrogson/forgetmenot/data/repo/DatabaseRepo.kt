@@ -1,52 +1,56 @@
 package com.toadfrogson.forgetmenot.data.repo
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.toadfrogson.forgetmenot.data.dao.TaskDao
 import com.toadfrogson.forgetmenot.data.entity.SingleTaskEntity
 import com.toadfrogson.forgetmenot.data.model.TaskModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 
 interface DatabaseRepo {
-    val tasksList: LiveData<List<TaskModel>>
-    fun getAllTasks()
+    val tasksList: Flow<List<SingleTaskEntity?>>
+   // fun getAllTasks(): <List<TaskModel>>
     suspend fun getTasksByCategory(category: String)
-    suspend fun saveTask(taskEntity: SingleTaskEntity)
+    suspend fun saveTask(singleTask: TaskModel)
 }
 
 class DatabaseRepoImpl(private val dao: TaskDao) : DatabaseRepo {
-    val searchResult = MutableLiveData<List<SingleTaskEntity?>>()
-    override val tasksList: LiveData<List<TaskModel>> = convertEntities(dao.getAll())
+   // val searchResult = MutableLiveData<List<SingleTaskEntity?>>()
+   // override var tasksList: LiveData<List<TaskModel>> = convertEntities(dao.getAll())
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    override val tasksList: Flow<List<SingleTaskEntity?>> = dao.getAll()
 
-    override fun getAllTasks(){
-
-    }
+    // override fun getAllTasks(): LiveData<List<TaskModel>> = convertEntities(dao.getAll())
 
     override suspend fun getTasksByCategory(category: String) {
-        coroutineScope.launch(Dispatchers.Main) {
+        /*coroutineScope.launch(Dispatchers.Main) {
             searchResult.value = findTasks(category).await()
-        }
+        }*/
     }
 
-    override suspend fun saveTask(taskEntity: SingleTaskEntity) {
+    override suspend fun saveTask(singleTask: TaskModel) {
         coroutineScope.launch(Dispatchers.IO) {
-            dao.insertTask(taskEntity)
+            singleTask.id
+            dao.insertTask(TaskModel.convertToEntity(singleTask))
         }
     }
 
 
-    private fun findTasks(category: String): Deferred<List<SingleTaskEntity?>> =
+  /*  private fun findTasks(category: String): Deferred<List<SingleTaskEntity?>> =
         coroutineScope.async(Dispatchers.IO) { return@async dao.getAllInCategory(category) }
 
-    private fun convertEntities(entities: LiveData<List<SingleTaskEntity?>>) : LiveData<List<TaskModel>> {
+    private fun getAllData(): Deferred<LiveData<List<SingleTaskEntity?>>> =
+        coroutineScope.async(Dispatchers.IO) { return@async dao.getAll() }
+*/
+
+    /*private fun convertEntities(entities: Flow<List<SingleTaskEntity?>>) : Flow<List<SingleTaskEntity>> {
         val list = mutableListOf<TaskModel>()
-        entities.value?.forEach {
+        val dataLsit = entities
+        dataLsit?.forEach {
             list.add(TaskModel.map(it))
         }
         val data = MutableLiveData<List<TaskModel>>()
         data.value = list
         return data
-    }
+    }*/
 }

@@ -72,22 +72,22 @@ fun Tabs(pagerState: PagerState) {
 }
 fun generateMocks(): List<TaskModel> {
     val mockedTasks = mutableListOf<TaskModel>()
-    mockedTasks.add(TaskModel(0,"First Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(1, "Second Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(2,"Third Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(3, "Fourth Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(title = "First Task", description =  "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(title = "Second Task", description = "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(title = "Third Task", description = "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(title = "Fourth Task", description = "it's short but meaningful description"))
     return mockedTasks
 }
 
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(pagerState: PagerState, tasksData: List<TaskModel>) {
     HorizontalPager(state = pagerState) {
             page ->
         when (page) {
-            0 -> TabContentScreen(generateMocks())
-            1 -> TabContentScreen(generateMocks())
-            2 -> TabContentScreen(generateMocks())
+            0 -> TabContentScreen(tasksData)
+            1 -> TabContentScreen(tasksData)
+            2 -> TabContentScreen(tasksData)
         }
     }
 }

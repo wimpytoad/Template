@@ -14,7 +14,7 @@ const val DATABASE_NAME = "tasks_db"
 const val DATABASE_DATA_FILENAME = "tasks_db.json"
 
 
-@Database(entities = [SingleTaskEntity::class], version = 1, exportSchema = false)
+@Database(entities = [SingleTaskEntity::class], version = 2, exportSchema = true)
 abstract class TaskDB : RoomDatabase() {
     abstract fun taskDao() : TaskDao
 

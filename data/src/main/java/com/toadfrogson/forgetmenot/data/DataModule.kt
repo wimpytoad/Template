@@ -11,7 +11,13 @@ class DataModule {
     companion object {
         val dataModule = module {
             single<DatabaseRepo> { DatabaseRepoImpl(get()) }
-            single<TaskDB> { Room.databaseBuilder(get(), TaskDB::class.java, DATABASE_NAME).build() }
+            single<TaskDB> {
+                Room.databaseBuilder(
+                    get(),
+                    TaskDB::class.java,
+                    DATABASE_NAME
+                ).fallbackToDestructiveMigration().build()
+            }
             single<TaskDao> {
                 val database = get<TaskDB>()
                 database.taskDao()

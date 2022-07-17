@@ -7,10 +7,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
-import com.toadfrogson.forgetmenot.data.entity.SingleTaskEntity
+import com.toadfrogson.forgetmenot.data.model.TaskModel
 import com.toadfrogson.forgetmenot.ui.components.Tabs
 import com.toadfrogson.forgetmenot.ui.components.TabsContent
 import com.toadfrogson.forgetmenot.ui.theme.Primary
@@ -34,13 +34,10 @@ import com.toadfrogson.forgetmenot.viewmodel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import kotlin.time.ExperimentalTime
-import androidx.compose.runtime.livedata.observeAsState
-import com.toadfrogson.forgetmenot.data.model.TaskModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainView(viewModel: TasksViewModel = getViewModel()) {
 
@@ -48,12 +45,17 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
     val coroutineScope = rememberCoroutineScope()
+    val tasksList =  viewModel.allTasks.observeAsState().value?.map { it ->
+        TaskModel.map(it)
+    }?: emptyList()
 
-    val allTasks = viewModel.allTasks.observeAsState(listOf())
 
     BottomSheetScaffold(
         floatingActionButton = {
-            AddNewTaskButton(scope = coroutineScope, bottomSheetScaffoldState = bottomSheetScaffoldState)
+            AddNewTaskButton(
+                scope = coroutineScope,
+                bottomSheetScaffoldState = bottomSheetScaffoldState
+            )
         },
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
@@ -66,18 +68,22 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
             }
         }, sheetPeekHeight = 0.dp
     ) {
-        TaskTabs(allTasks.value)
+        TaskTabs(tasksList)
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddNewTaskButton(scope: CoroutineScope, bottomSheetScaffoldState: BottomSheetScaffoldState) {
-    var buttonIcon = if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) Icons.Default.Add
+fun AddNewTaskButton(
+    scope: CoroutineScope,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    viewModel: TasksViewModel = getViewModel()
+) {
+    val buttonIcon = if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) Icons.Default.Add
     else Icons.Default.Done
     FloatingActionButton(modifier = Modifier.padding(bottom = 100.dp), onClick = {
         scope.launch {
-
+            viewModel.saveTask(TaskModel(title = "First Task", description =  "it's short but meaningful description"))
             if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
                 bottomSheetScaffoldState.bottomSheetState.expand()
             } else {
@@ -120,6 +126,6 @@ fun TaskTabs(taskList: List<TaskModel>) {
 
         Tabs(pagerState = pagerState)
 
-        TabsContent(pagerState = pagerState)
+        TabsContent(pagerState = pagerState, taskList)
     }
 }

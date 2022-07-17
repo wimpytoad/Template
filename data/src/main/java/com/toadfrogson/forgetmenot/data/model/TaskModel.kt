@@ -4,7 +4,7 @@ import com.toadfrogson.forgetmenot.data.entity.SingleTaskEntity
 
 
 data class TaskModel(
-    val id: Int,
+    val id: Int? = null,
     val title: String,
     val description: String? = null,
     val completed: Boolean = false,

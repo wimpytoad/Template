@@ -35,6 +35,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import kotlin.time.ExperimentalTime
+import androidx.compose.runtime.livedata.observeAsState
+import com.toadfrogson.forgetmenot.data.model.TaskModel
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -46,7 +49,8 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
     )
     val coroutineScope = rememberCoroutineScope()
 
-    val taskList = viewModel.getTasks()
+    val allTasks = viewModel.allTasks.observeAsState(listOf())
+
     BottomSheetScaffold(
         floatingActionButton = {
             AddNewTaskButton(scope = coroutineScope, bottomSheetScaffoldState = bottomSheetScaffoldState)
@@ -62,7 +66,7 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
             }
         }, sheetPeekHeight = 0.dp
     ) {
-        TaskTabs(taskList)
+        TaskTabs(allTasks.value)
     }
 }
 
@@ -85,10 +89,10 @@ fun AddNewTaskButton(scope: CoroutineScope, bottomSheetScaffoldState: BottomShee
     }
 }
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalTime::class, ExperimentalUnitApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalUnitApi::class)
 @Composable
 @UiComposable
-fun TaskTabs(taskList: List<SingleTaskEntity>) {
+fun TaskTabs(taskList: List<TaskModel>) {
     taskList.size
     //TODO: refactor to have actual size of tab columns set by user
     val pagerState = rememberPagerState(pageCount = 3)

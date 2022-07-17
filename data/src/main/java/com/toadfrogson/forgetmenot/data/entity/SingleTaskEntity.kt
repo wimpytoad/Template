@@ -7,7 +7,7 @@ import com.toadfrogson.forgetmenot.data.DATABASE_NAME
 
 @Entity(tableName = DATABASE_NAME)
 data class SingleTaskEntity(
-    @PrimaryKey val uid: Int,
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "task_title") val taskTitle: String,
     @ColumnInfo(name = "task_description") val taskDescription: String,
     @ColumnInfo(name = "task_completion") val taskCompletion: Boolean,

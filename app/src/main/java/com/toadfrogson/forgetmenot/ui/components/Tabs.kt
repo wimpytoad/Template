@@ -20,7 +20,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.toadfrogson.forgetmenot.R
-import com.toadfrogson.forgetmenot.model.TaskModel
+import com.toadfrogson.forgetmenot.data.model.TaskModel
 import com.toadfrogson.forgetmenot.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -72,10 +72,10 @@ fun Tabs(pagerState: PagerState) {
 }
 fun generateMocks(): List<TaskModel> {
     val mockedTasks = mutableListOf<TaskModel>()
-    mockedTasks.add(TaskModel("First Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel("Second Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel("Third Task", "it's short but meaningful description"))
-    mockedTasks.add(TaskModel("Fourth Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(0,"First Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(1, "Second Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(2,"Third Task", "it's short but meaningful description"))
+    mockedTasks.add(TaskModel(3, "Fourth Task", "it's short but meaningful description"))
     return mockedTasks
 }
 

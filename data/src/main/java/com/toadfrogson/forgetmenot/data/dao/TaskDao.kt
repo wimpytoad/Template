@@ -1,5 +1,6 @@
 package com.toadfrogson.forgetmenot.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,13 +11,16 @@ import com.toadfrogson.forgetmenot.data.entity.SingleTaskEntity
 @Dao
 interface TaskDao {
     @Query("SELECT * FROM $DATABASE_NAME")
-    fun getAll(): List<SingleTaskEntity>
+    fun getAll(): LiveData<List<SingleTaskEntity?>>
 
     @Query("SELECT * FROM $DATABASE_NAME WHERE task_category LIKE :category")
-    fun getAllInCategory(category: String): List<SingleTaskEntity>
+    fun getAllInCategory(category: String): List<SingleTaskEntity?>
 
     @Insert
     fun insertAll(tasks: List<SingleTaskEntity>)
+
+    @Insert
+    fun insertTask(task: SingleTaskEntity)
 
     @Delete
     fun delete(task: SingleTaskEntity)

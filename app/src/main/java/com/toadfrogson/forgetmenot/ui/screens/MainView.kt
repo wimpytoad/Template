@@ -24,25 +24,29 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import com.toadfrogson.forgetmenot.data.entity.SingleTaskEntity
 import com.toadfrogson.forgetmenot.ui.components.Tabs
 import com.toadfrogson.forgetmenot.ui.components.TabsContent
 import com.toadfrogson.forgetmenot.ui.theme.Primary
 import com.toadfrogson.forgetmenot.ui.theme.SecondaryTextColor
 import com.toadfrogson.forgetmenot.ui.theme.WhiteBackgroundColor
+import com.toadfrogson.forgetmenot.viewmodel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 import kotlin.time.ExperimentalTime
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MainView() {
+fun MainView(viewModel: TasksViewModel = getViewModel()) {
 
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
     val coroutineScope = rememberCoroutineScope()
 
+    val taskList = viewModel.getTasks()
     BottomSheetScaffold(
         floatingActionButton = {
             AddNewTaskButton(scope = coroutineScope, bottomSheetScaffoldState = bottomSheetScaffoldState)
@@ -58,7 +62,7 @@ fun MainView() {
             }
         }, sheetPeekHeight = 0.dp
     ) {
-        TaskTabs()
+        TaskTabs(taskList)
     }
 }
 
@@ -84,7 +88,8 @@ fun AddNewTaskButton(scope: CoroutineScope, bottomSheetScaffoldState: BottomShee
 @OptIn(ExperimentalPagerApi::class, ExperimentalTime::class, ExperimentalUnitApi::class)
 @Composable
 @UiComposable
-fun TaskTabs() {
+fun TaskTabs(taskList: List<SingleTaskEntity>) {
+    taskList.size
     //TODO: refactor to have actual size of tab columns set by user
     val pagerState = rememberPagerState(pageCount = 3)
     Column(modifier = Modifier.background(WhiteBackgroundColor)) {

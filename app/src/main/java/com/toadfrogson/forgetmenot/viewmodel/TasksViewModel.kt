@@ -9,7 +9,7 @@ import com.toadfrogson.forgetmenot.data.model.TaskModel
 import com.toadfrogson.forgetmenot.data.repo.DatabaseRepo
 
 class TasksViewModel(private val repo: DatabaseRepo): ViewModel() {
-    val allTasks: LiveData<List<SingleTaskEntity?>>  = repo.tasksList.asLiveData()
+    val allTasks: LiveData<List<TaskModel>>  = repo.tasksList.asLiveData()
 
     //val categoryResults: MutableLiveData<List<SingleTaskEntity?>>
 

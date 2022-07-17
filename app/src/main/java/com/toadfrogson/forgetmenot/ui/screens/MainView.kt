@@ -45,9 +45,7 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
     val coroutineScope = rememberCoroutineScope()
-    val tasksList =  viewModel.allTasks.observeAsState().value?.map { it ->
-        TaskModel.map(it)
-    }?: emptyList()
+    val tasksList =  viewModel.allTasks.observeAsState().value?: emptyList()
 
 
     BottomSheetScaffold(

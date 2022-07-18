@@ -1,24 +1,26 @@
 package com.toadfrogson.forgetmenot.ui.components
 
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.RadioButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.toadfrogson.forgetmenot.ui.theme.Primary
-import com.toadfrogson.forgetmenot.ui.theme.SecondaryTextColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RadioButton(
+fun StatusCheckButton(
     modifier : Modifier = Modifier,
-    isSelected: Boolean,
+    isSelected: Boolean = false,
     isEnabled: Boolean = true,
     onClick : () -> Unit) {
-    androidx.compose.material.RadioButton(
+    RadioButton(
         modifier = modifier.size(24.dp),
         colors = RadioButtonDefaults.colors(
-            selectedColor = Primary,
-            unselectedColor = SecondaryTextColor
+            selectedColor = MaterialTheme.colorScheme.secondary,
+            unselectedColor = MaterialTheme.colorScheme.secondary
         ),
         selected = isSelected,
         enabled = isEnabled,

@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,9 +28,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.toadfrogson.forgetmenot.data.model.TaskModel
 import com.toadfrogson.forgetmenot.ui.components.Tabs
 import com.toadfrogson.forgetmenot.ui.components.TabsContent
-import com.toadfrogson.forgetmenot.ui.theme.Primary
-import com.toadfrogson.forgetmenot.ui.theme.SecondaryTextColor
-import com.toadfrogson.forgetmenot.ui.theme.WhiteBackgroundColor
 import com.toadfrogson.forgetmenot.viewmodel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -48,7 +46,7 @@ fun MainView(viewModel: TasksViewModel = getViewModel()) {
     val tasksList =  viewModel.allTasks.observeAsState().value?: emptyList()
 
 
-    BottomSheetScaffold(
+    BottomSheetScaffold(topBar = null,
         floatingActionButton = {
             AddNewTaskButton(
                 scope = coroutineScope,
@@ -100,8 +98,8 @@ fun TaskTabs(taskList: List<TaskModel>) {
     taskList.size
     //TODO: refactor to have actual size of tab columns set by user
     val pagerState = rememberPagerState(pageCount = 3)
-    Column(modifier = Modifier.background(WhiteBackgroundColor)) {
-        TopAppBar(backgroundColor = Primary) {
+    Column(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+        /*TopAppBar(backgroundColor = MaterialTheme.colorScheme.surfaceVariant) {
             Column(
                 modifier = Modifier.fillMaxSize(),
 
@@ -110,7 +108,7 @@ fun TaskTabs(taskList: List<TaskModel>) {
             ) {
                 Text(
                     text = "Your Notes, sire",
-                    style = TextStyle(color = SecondaryTextColor),
+                    style = TextStyle(color = MaterialTheme.colorScheme.secondary),
                     fontWeight = FontWeight.Bold,
                     fontSize = TextUnit(
                         18F,
@@ -120,7 +118,7 @@ fun TaskTabs(taskList: List<TaskModel>) {
                     textAlign = TextAlign.Center
                 )
             }
-        }
+        }*/
 
         Tabs(pagerState = pagerState)
 

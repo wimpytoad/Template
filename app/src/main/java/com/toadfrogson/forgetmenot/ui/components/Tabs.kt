@@ -3,16 +3,20 @@ package com.toadfrogson.forgetmenot.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -21,7 +25,6 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.toadfrogson.forgetmenot.R
 import com.toadfrogson.forgetmenot.data.model.TaskModel
-import com.toadfrogson.forgetmenot.ui.theme.*
 import kotlinx.coroutines.launch
 
 
@@ -38,26 +41,29 @@ fun Tabs(pagerState: PagerState) {
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = WhiteBackgroundColor,
-        contentColor = SecondaryTextColor,
+        backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.primaryContainer,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
                 height = 2.dp,
-                color = Color.White
+                color = MaterialTheme.colorScheme.tertiary
             )
         }
     ) {
         tabItems.forEachIndexed { index, item ->
             Tab(
                 icon = {
-                    Icon(imageVector = item.second, contentDescription = null)
+                    Icon(
+                        imageVector = item.second,
+                        contentDescription = null,
+                        tint = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
+                    )
                 },
                 text = {
                     Text(
                         item.first,
-
-                        color = if (pagerState.currentPage == index) SecondaryDarkColor else SecondaryColor
+                        color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary
                     )
                 },
                 selected = pagerState.currentPage == index,
@@ -70,20 +76,12 @@ fun Tabs(pagerState: PagerState) {
         }
     }
 }
-fun generateMocks(): List<TaskModel> {
-    val mockedTasks = mutableListOf<TaskModel>()
-    mockedTasks.add(TaskModel(title = "First Task", description =  "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(title = "Second Task", description = "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(title = "Third Task", description = "it's short but meaningful description"))
-    mockedTasks.add(TaskModel(title = "Fourth Task", description = "it's short but meaningful description"))
-    return mockedTasks
-}
+
 
 @ExperimentalPagerApi
 @Composable
 fun TabsContent(pagerState: PagerState, tasksData: List<TaskModel>) {
-    HorizontalPager(state = pagerState) {
-            page ->
+    HorizontalPager(state = pagerState) { page ->
         when (page) {
             0 -> TabContentScreen(tasksData)
             1 -> TabContentScreen(tasksData)
@@ -99,7 +97,7 @@ fun TabContentScreen(taskItems: List<TaskModel>) {
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        taskItems.forEachIndexed{ index, item ->
+        taskItems.forEachIndexed { index, item ->
             TaskItem(text = item.title, description = item.description)
         }
     }

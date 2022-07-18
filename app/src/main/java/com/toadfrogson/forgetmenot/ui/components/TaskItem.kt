@@ -8,12 +8,11 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.toadfrogson.forgetmenot.ui.theme.PrimaryDarkColor
-import com.toadfrogson.forgetmenot.ui.theme.PrimaryTextColor
 import kotlin.time.ExperimentalTime
 
 const val TaskStateUnchecked = false
@@ -33,11 +32,11 @@ fun TaskItem(text: String, description: String? = null, taskState: Boolean = Tas
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            RadioButton(modifier = Modifier.padding(end = 15.dp), isSelected = taskCompleted) {
+            StatusCheckButton(modifier = Modifier.padding(end = 15.dp), isSelected = taskCompleted) {
                 taskCompleted = !taskCompleted
             }
 
-            TextView(modifier = Modifier.weight(1.0f), text = text, color = PrimaryTextColor)
+            TextView(modifier = Modifier.weight(1.0f), text = text, color = MaterialTheme.colorScheme.secondary)
 
             Icon(imageVector = expandContentIcon, contentDescription = "", Modifier.clickable {
                 isExpanded = !isExpanded
@@ -46,7 +45,7 @@ fun TaskItem(text: String, description: String? = null, taskState: Boolean = Tas
 
         description?.let {
             AnimatedVisibility(visible = isExpanded) {
-                TextView(text = it, color = PrimaryTextColor, modifier = Modifier
+                TextView(text = it, color = MaterialTheme.colorScheme.secondary, modifier = Modifier
                     .padding(start = 30.dp, end = 20.dp, bottom = 6.dp)
                     .fillMaxWidth()
                     .wrapContentHeight())
@@ -56,7 +55,7 @@ fun TaskItem(text: String, description: String? = null, taskState: Boolean = Tas
         Divider(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             thickness = 1.dp,
-            color = PrimaryDarkColor
+            color = MaterialTheme.colorScheme.outline
         )
     }
 

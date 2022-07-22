@@ -20,6 +20,7 @@ class WebClientException(val statusCode: HttpStatusCode) : Exception()
 
 class WebClient{
 
+    @OptIn(ExperimentalSerializationApi::class)
     @ExperimentalTime
     suspend inline fun <reified T : Any> makeClientGet(endpoint: String): ApiResponse<T> {
 
@@ -39,11 +40,10 @@ class WebClient{
             return when (ex) {
                 is WebClientException -> ApiResponse(false, null,
                     ErrorResponse("", ex.statusCode.value))
-                is NoTransformationFoundException, is Exception-> {
+                else -> {
                     println("GET '$url' FAILED: '${ex.message}'")
                     ApiResponse(true, null, null)
                 }
-                else -> ApiResponse(false, null, null)
             }
         }
     }

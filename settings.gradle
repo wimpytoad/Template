@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "Forget Me Not"
 include ':app'
 include ':data'
+include ':network'

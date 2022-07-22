@@ -82,4 +82,5 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$composeVersion"
 
     implementation project(":data")
+    implementation project(":network")
 }
